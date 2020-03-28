@@ -1,0 +1,16 @@
+{
+  "name": "ud892",
+  "version": "1.0.0",
+  "description": "This repository contains code featured in Udacity's [Web Tooling & Automation](https://www.udacity.com/course/web-tooling-automation--ud892) course",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "gulp": "^4.0.2",
+    "gulp-sass": "4.0.2"
+  }
+}
