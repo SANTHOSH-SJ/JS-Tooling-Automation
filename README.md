@@ -24,3 +24,9 @@ Production release files will be kept inside dist folder
 sass output to minified for compression
 added seperate gulp for dev and prod
 added gulp task for production
+
+added babel transpiler
+
+
+imagemin (&) imagemin-pngquant packages had vulnerabilities so dint install.
+As a result images are not compressed

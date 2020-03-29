@@ -4,6 +4,8 @@ const autoprefixer = require("gulp-autoprefixer"); // to make css compatible for
 const browserSync = require("browser-sync").create();
 const concat = require("gulp-concat");
 const uglify = require("gulp-uglify");
+const babel = require("gulp-babel");
+const sourcemaps = require("gulp-sourcemaps");
 
 
 gulp.task("sass", async () => {
@@ -43,6 +45,7 @@ gulp.task("copy-img", async () => {
 gulp.task("scripts-dev", async () => {
   gulp
     .src("./js/**/*.js")
+    .pipe(babel())
     .pipe(concat("main.js"))
     .pipe(gulp.dest("./dist/js"));
 
@@ -52,8 +55,11 @@ gulp.task("scripts-dev", async () => {
 gulp.task("scripts-dist", async () => {
   gulp
     .src("./js/**/*.js")
+    .pipe(sourcemaps.init())
+    .pipe(babel())
     .pipe(concat("main.js"))
     .pipe(uglify())
+    .pipe(sourcemaps.write("./"))
     .pipe(gulp.dest("./dist/js"));
 
 });
