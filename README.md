@@ -17,3 +17,10 @@ For auto re-loading webpage when file change (as of now reloads only on css chan
 
 Production release files will be kept inside dist folder
 
+
+
+### changes
+
+sass output to minified for compression
+added seperate gulp for dev and prod
+added gulp task for production

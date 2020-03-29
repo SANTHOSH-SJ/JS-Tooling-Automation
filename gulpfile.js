@@ -2,12 +2,18 @@ const gulp = require("gulp");
 const sass = require('gulp-sass');
 const autoprefixer = require("gulp-autoprefixer"); // to make css compatible for all browsers. see npm for example 
 const browserSync = require("browser-sync").create();
+const concat = require("gulp-concat");
+const uglify = require("gulp-uglify");
 
 
 gulp.task("sass", async () => {
   gulp
     .src("./sass/**/*.scss") // all saas files inside saas folder and saas sub-folders
-    .pipe(sass().on("error", sass.logError)) // converts file from saas to proper css; on error log error and coninue instead of breaking
+    .pipe(
+      sass({
+        outputStyle: 'compressed'
+      })
+        .on("error", sass.logError)) // converts file from saas to proper css; on error log error and coninue instead of breaking
     .pipe(autoprefixer({
       "overrideBrowserslist": [
         "defaults"
@@ -27,12 +33,30 @@ gulp.task("copy-html", async () => {
 
 // copy img files
 gulp.task("copy-img", async () => {
-  console.log("inisde img cpy")
   gulp
     .src("./img/**/*")
     .pipe(gulp.dest("./dist/img"))
 });
 
+
+// js for development
+gulp.task("scripts-dev", async () => {
+  gulp
+    .src("./js/**/*.js")
+    .pipe(concat("main.js"))
+    .pipe(gulp.dest("./dist/js"));
+
+});
+
+// js for production
+gulp.task("scripts-dist", async () => {
+  gulp
+    .src("./js/**/*.js")
+    .pipe(concat("main.js"))
+    .pipe(uglify())
+    .pipe(gulp.dest("./dist/js"));
+
+});
 
 
 
@@ -48,6 +72,14 @@ gulp.task("watcher", async () => {
     server: "./dist"
   });
 });
+
+
+gulp.task("prod", gulp.parallel(
+  "sass",
+  "copy-img",
+  "copy-html",
+  "scripts-dist"
+  ));
 
 
 
