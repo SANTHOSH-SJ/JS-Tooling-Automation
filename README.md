@@ -10,4 +10,10 @@ It will add automatically
 
 ###  browser sync
 
-For auto re-loading webpage when file change
+For auto re-loading webpage when file change (as of now reloads only on css change)
+
+
+### seperating development and production files
+
+Production release files will be kept inside dist folder
+

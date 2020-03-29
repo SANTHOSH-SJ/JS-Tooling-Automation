@@ -3,19 +3,6 @@ const sass = require('gulp-sass');
 const autoprefixer = require("gulp-autoprefixer"); // to make css compatible for all browsers. see npm for example 
 const browserSync = require("browser-sync").create();
 
-gulp.task("default", async () => {
-  // code for your default task goes here
-
-  // watch for file change and rebuild
-  gulp.watch("./sass/**/*.scss", gulp.series('sass'));
-
-  // starts the server
-  browserSync.init({
-    server: "./"
-  });
-
-});
-
 
 gulp.task("sass", async () => {
   gulp
@@ -25,10 +12,44 @@ gulp.task("sass", async () => {
       "overrideBrowserslist": [
         "defaults"
       ]
-    })
-    )
-    .pipe(gulp.dest("./css"))
+    }))
+    .pipe(gulp.dest("./dist/css"))
     .pipe(browserSync.stream()); //  reload at specific points during our tasks; here -when css changed reload
 });
 
-// gulp.watch("./sass/**/*.scss", ["sass"]);
+// copy html file
+gulp.task("copy-html", async () => {
+  gulp
+    .src("./*.html")
+    .pipe(gulp.dest("./dist"))
+    .pipe(browserSync.stream());
+});
+
+// copy img files
+gulp.task("copy-img", async () => {
+  console.log("inisde img cpy")
+  gulp
+    .src("./img/**/*")
+    .pipe(gulp.dest("./dist/img"))
+});
+
+
+
+
+// watch for file change and rebuild
+gulp.task("watcher", async () => {
+  gulp.watch("./sass/**/*.scss", gulp.parallel('sass'));
+  // gulp.watch("./*.html", gulp.parallel("copy-html")); // copy html file and reload
+
+  gulp.watch("./dist/*.html").on("change", browserSync.reload); // reload only when html file inside dist is modified
+
+  // starts the server
+  browserSync.init({
+    server: "./dist"
+  });
+});
+
+
+
+// executes by default and run only once
+gulp.task("default", gulp.series(gulp.parallel("sass", "copy-html", "copy-img"), 'watcher'));
